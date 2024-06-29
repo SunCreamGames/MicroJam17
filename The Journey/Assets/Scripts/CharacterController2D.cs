@@ -1,3 +1,5 @@
+using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,12 +15,17 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private SpriteRenderer CrouchDisableImage;
 
     const float GroundedRadius = .2f;
-    private bool Grounded;
+    [HideInInspector]
+    public bool Grounded;
     const float CeilingRadius = .05f;
     const float CeilingAdditionalPointsDistance = .3f;
     private Rigidbody2D Rigidbody2D;
     private bool FacingRight = true;
     private Vector3 Velocity = Vector3.zero;
+
+    FruitObject interactingObject;
+
+    private bool isInteracting;
 
     [Header("Events")]
     [Space]
@@ -32,8 +39,7 @@ public class CharacterController2D : MonoBehaviour
         if (OnLandEvent == null)
             OnLandEvent = new UnityEvent();
 
-        OnLandEvent.AddListener(() => { Debug.Log($"<color=cyan> Landed </color>"); });
-
+        isInteracting = false;
     }
 
     private void FixedUpdate()
@@ -53,9 +59,37 @@ public class CharacterController2D : MonoBehaviour
         }
     }
 
+    public bool TryEat(FruitObject fruit)
+    {
+        Debug.Log($"<color=red>Controller interacting</color>");
+        isInteracting = true;
+        interactingObject = fruit;
+        var isFruitEaten = fruit.InteractWith(Time.fixedDeltaTime);
+
+        if (isFruitEaten)
+        {
+            isInteracting = false;
+            interactingObject = null;
+        }
+
+        return isFruitEaten;
+    }
+
+    public void StopEating()
+    {
+        isInteracting = false;
+        if (interactingObject != null)
+            interactingObject.StopInteraction();
+    }
 
     public void Move(float move, float flyMove, bool crouch, bool jump)
     {
+        if (isInteracting)
+        {
+            Rigidbody2D.velocity = Vector3.zero;
+            return;
+        }
+
         if (!crouch)
         {
             if (Physics2D.OverlapCircle(CeilingChecks[0].position, CeilingRadius, WhatIsGround) ||
@@ -122,4 +156,5 @@ public class CharacterController2D : MonoBehaviour
         theScale.x *= -1;
         transform.localScale = theScale;
     }
+
 }

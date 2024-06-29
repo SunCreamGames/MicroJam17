@@ -5,9 +5,25 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    int hp;
-    float food, stamina;
+
+    [SerializeField] CharacterController2D characterController;
+
+    [SerializeField] int foodNeeded = 5;
+
+    [SerializeField] int currentFood;
+
+    [SerializeField] float stamina;
+
+    [SerializeField] CircleCollider2D bodyCollider;
+
+    [SerializeField] LayerMask fruits;
+
+    public event Action<int> OnFoodBarUpdate;
+
     public event Action GameOverByDeath;
+
+    bool tryInteract = false;
+    bool wasInterating = false;
 
     // Start is called before the first frame update
     void Start()
@@ -15,23 +31,44 @@ public class PlayerScript : MonoBehaviour
         ResetValues();
     }
 
-    private void ResetValues()
+    public void ResetValues()
     {
-        hp = 5;
         stamina = 5f;
-        food = 5f;
+        currentFood = 0;
     }
 
-    public void GetDamage(int damageAmount = 1)
+    void OnItemEaten()
     {
-        hp -= damageAmount;
+        currentFood++;
+        OnFoodBarUpdate?.Invoke(currentFood);
+    }
 
-        if (hp < 0) hp = 0;
+    private void Update()
+    {
+        tryInteract = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        Debug.Log(tryInteract);
+    }
+    private void FixedUpdate()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(bodyCollider.transform.position, bodyCollider.radius, fruits);
 
-        if (hp == 0)
+        Debug.Log($"<color=cyan>{colliders.Length}</color>");
+
+        if (colliders.Length == 0) return;
+
+        if (tryInteract && characterController.Grounded)
         {
-            GameOverByDeath?.Invoke();
+            if (characterController.TryEat(colliders[0].gameObject.GetComponent<FruitObject>()))
+                OnItemEaten();
+            wasInterating = true;
         }
-
+        else
+        {
+            if (wasInterating)
+            {
+                characterController.StopEating();
+                wasInterating = false;
+            }
+        }
     }
 }

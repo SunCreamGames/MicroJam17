@@ -8,7 +8,7 @@ public class PlayerIslandMovement : MonoBehaviour
     float speed;
 
     [SerializeField]
-    CharacterController2D _characterController;
+    CharacterController2D characterController;
 
     bool fly, crouch, jump;
     float movementX, movementY;
@@ -46,7 +46,7 @@ public class PlayerIslandMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _characterController.Move(movementX * speed * Time.fixedDeltaTime, movementY * speed * Time.fixedDeltaTime, crouch, jump);
+        characterController.Move(movementX * speed * Time.fixedDeltaTime, movementY * speed * Time.fixedDeltaTime, crouch, jump);
         jump = false;
     }
 }
