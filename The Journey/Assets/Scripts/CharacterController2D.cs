@@ -54,7 +54,7 @@ public class CharacterController2D : MonoBehaviour
     }
 
 
-    public void Move(float move, bool crouch, bool jump, bool fly)
+    public void Move(float move, float flyMove, bool crouch, bool jump)
     {
         if (!crouch)
         {
@@ -63,13 +63,14 @@ public class CharacterController2D : MonoBehaviour
                 Physics2D.OverlapCircle(CeilingChecks[2].position, CeilingRadius, WhatIsGround))
             {
                 crouch = true;
+                flyMove = 0f;
             }
         }
 
 
         if (Grounded && crouch)
         {
-
+            flyMove = 0f;
             move *= CrouchSpeed;
 
             if (CrouchDisableCollider != null)
@@ -88,6 +89,11 @@ public class CharacterController2D : MonoBehaviour
         }
 
         Vector3 targetVelocity = new Vector2(move * 10f, Rigidbody2D.velocity.y);
+        if (flyMove > 0f)
+        {
+            targetVelocity = new Vector2(move * 10f, flyMove * 10f);
+        }
+
         Rigidbody2D.velocity = Vector3.SmoothDamp(Rigidbody2D.velocity, targetVelocity, ref Velocity, MovementSmoothing);
 
         if (move > 0 && !FacingRight)

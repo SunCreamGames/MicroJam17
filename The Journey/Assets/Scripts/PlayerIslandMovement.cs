@@ -11,7 +11,7 @@ public class PlayerIslandMovement : MonoBehaviour
     CharacterController2D _characterController;
 
     bool fly, crouch, jump;
-    float movementX;
+    float movementX, movementY;
 
     void Start()
     {
@@ -41,11 +41,12 @@ public class PlayerIslandMovement : MonoBehaviour
             fly = crouch = false;
         }
         movementX = horizontalIput;
+        movementY = verticalInput;
     }
 
     private void FixedUpdate()
     {
-        _characterController.Move(movementX * speed * Time.fixedDeltaTime, crouch, jump, fly);
+        _characterController.Move(movementX * speed * Time.fixedDeltaTime, movementY * speed * Time.fixedDeltaTime, crouch, jump);
         jump = false;
     }
 }
