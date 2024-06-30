@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ public class SceneChanger : MonoBehaviour
     }
     public void LoadLevelSceneBack()
     {
+        PlayerPrefs.SetInt(PlayerPrefsVariables.IsGettingBackFromCave, 1);
         var currentSceneName = SceneManager.GetActiveScene().name;
         var sleepSpotSceneName = currentSceneName.Replace("SleepSpot", "");
         LoadScene(sleepSpotSceneName);

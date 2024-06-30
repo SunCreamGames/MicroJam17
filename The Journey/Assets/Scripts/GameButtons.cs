@@ -9,6 +9,7 @@ public class GameButtons : MonoBehaviour
     SceneChanger _sceneChanger;
     public void LoadMapScene()
     {
+        PlayerPrefs.SetInt(PlayerPrefsVariables.IsGettingBackFromCave, 0);
         _sceneChanger.LoadScene("MapScene");
     }
     public void LoadMenu()

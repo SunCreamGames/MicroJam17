@@ -9,6 +9,7 @@ namespace Assets.Scripts
     public static class PlayerPrefsVariables
     {
         public static string Food => "food";
+        public static string IsGettingBackFromCave => "cave";
         public static string SoundLevel => "SoundLevel";
         public static string LevelsCompleted => "LevelsCompleted";
     

@@ -129,6 +129,7 @@ public class Player : MonoBehaviour
                         levelsCompleted++;
                         PlayerPrefs.SetInt(PlayerPrefsVariables.LevelsCompleted, levelsCompleted);
                         PlayerPrefs.SetInt(PlayerPrefsVariables.Food, 0);
+                        PlayerPrefs.SetInt(PlayerPrefsVariables.IsGettingBackFromCave, 0);
                         sceneChanger.LoadScene("MapScene");
                     }
                 }

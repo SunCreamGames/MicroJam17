@@ -204,7 +204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961607817463828997, guid: d5839d3b435c49447be7e266ffffe5c8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 5
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 6961607817463828997, guid: d5839d3b435c49447be7e266ffffe5c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -446,7 +446,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961607817463828997, guid: d5839d3b435c49447be7e266ffffe5c8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 5
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 6961607817463828997, guid: d5839d3b435c49447be7e266ffffe5c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -683,7 +683,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961607817463828997, guid: d5839d3b435c49447be7e266ffffe5c8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 12
+      value: 10.5
       objectReference: {fileID: 0}
     - target: {fileID: 6961607817463828997, guid: d5839d3b435c49447be7e266ffffe5c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1241,6 +1241,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathScreen: {fileID: 150099953}
+  player: {fileID: 1377937892}
+  sleepingSpotEntrance: {fileID: 1394244150}
 --- !u!4 &861399100
 Transform:
   m_ObjectHideFlags: 0
@@ -2798,25 +2800,15 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: 0, y: 11, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 146
+  - m_RefCount: 145
     m_Data: {fileID: 11400000, guid: 0674842678584454a9331d4fef9725f9, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 146
+  - m_RefCount: 145
     m_Data: {fileID: 21300000, guid: 2f4ca972189779c4b8de5b169ede7103, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 146
+  - m_RefCount: 145
     m_Data:
       e00: 1
       e01: 0
@@ -2835,7 +2827,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 146
+  - m_RefCount: 145
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -3311,7 +3303,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961607817463828997, guid: d5839d3b435c49447be7e266ffffe5c8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 12
+      value: 10.5
       objectReference: {fileID: 0}
     - target: {fileID: 6961607817463828997, guid: d5839d3b435c49447be7e266ffffe5c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4023,7 +4015,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961607817463828997, guid: d5839d3b435c49447be7e266ffffe5c8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6961607817463828997, guid: d5839d3b435c49447be7e266ffffe5c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4046,6 +4038,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1335794778}
     m_Modifications:
+    - target: {fileID: 7795161262927365289, guid: 997bf8f7fbbebf140bd52ceab4bb9c4a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7795161263330676357, guid: 997bf8f7fbbebf140bd52ceab4bb9c4a, type: 3}
       propertyPath: m_Name
       value: SleepingSpot
@@ -4064,7 +4060,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7795161263330676358, guid: 997bf8f7fbbebf140bd52ceab4bb9c4a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 10.5
       objectReference: {fileID: 0}
     - target: {fileID: 7795161263330676358, guid: 997bf8f7fbbebf140bd52ceab4bb9c4a, type: 3}
       propertyPath: m_LocalPosition.z
