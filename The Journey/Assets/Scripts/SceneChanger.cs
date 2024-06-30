@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,5 +19,18 @@ public class SceneChanger : MonoBehaviour
     public void OnFadeOutComplete()
     {
         SceneManager.LoadScene(sceneToLoad);
+    }
+
+    public void LoadSleepSpotScene()
+    {
+        var currentSceneName = SceneManager.GetActiveScene().name;
+        var sleepSpotSceneName = currentSceneName + "SleepSpot";
+        LoadScene(sleepSpotSceneName);
+    }
+    public void LoadLevelSceneBack()
+    {
+        var currentSceneName = SceneManager.GetActiveScene().name;
+        var sleepSpotSceneName = currentSceneName.Replace("SleepSpot", "");
+        LoadScene(sleepSpotSceneName);
     }
 }

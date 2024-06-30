@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
+    [SerializeField] SceneChanger sceneChanger;
     [SerializeField] CharacterController2D characterController;
 
     [SerializeField] int foodNeeded = 5;
@@ -21,11 +21,17 @@ public class Player : MonoBehaviour
     [SerializeField] CircleCollider2D bodyCollider;
 
     [SerializeField] LayerMask fruits;
+    [SerializeField] LayerMask sleepingSpots;
+
+    [SerializeField] GameObject sleepingSpotEntrance;
 
     public event Action<int> OnFoodBarUpdate;
     public event Action<float> OnStaminaBarUpdate;
 
     public event Action GameOverByDeath;
+    public event Action OnStomachFull;
+
+    [SerializeField] bool isInCave = false;
 
     bool tryInteract = false;
     bool wasInterating = false;
@@ -47,7 +53,10 @@ public class Player : MonoBehaviour
     public void ResetValues()
     {
         stamina = maxStamina;
-        currentFood = 0;
+        var food = PlayerPrefs.GetInt("food");
+        currentFood = food;
+        OnFoodBarUpdate?.Invoke(currentFood);
+        OnStaminaBarUpdate?.Invoke(stamina/maxStamina);
     }
 
     void OnItemEaten()
@@ -56,17 +65,13 @@ public class Player : MonoBehaviour
         OnFoodBarUpdate?.Invoke(currentFood);
         if (foodNeeded <= currentFood)
         {
-
-            Debug.Log($"<color=red> Full </color>");
+            sleepingSpotEntrance.SetActive(true);
         }
     }
 
     private void Update()
     {
         tryInteract = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        
-        if (foodNeeded <= currentFood)
-            tryInteract = false;
 
 
         if (stamina < maxStamina && staminaRegen)
@@ -78,22 +83,40 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(bodyCollider.transform.position, bodyCollider.radius, fruits);
+        Collider2D[] fruitColliders = Physics2D.OverlapCircleAll(bodyCollider.transform.position, bodyCollider.radius, fruits);
 
-        if (colliders.Length == 0) return;
-
-        if (tryInteract && characterController.Grounded)
+        if (fruitColliders.Length > 0)
         {
-            if (characterController.TryEat(colliders[0].gameObject.GetComponent<FruitObject>()))
-                OnItemEaten();
-            wasInterating = true;
+            // фрукти є
+            if (tryInteract && characterController.Grounded) // фрути є + жмем шіфт + на землі
+            {
+                if (characterController.TryEat(fruitColliders[0].gameObject.GetComponent<FruitObject>())) // хаваєм
+                    OnItemEaten();
+                wasInterating = true;
+            }
+            else
+            {
+                if (wasInterating) // фрукти є, але не жмем шіфт/не на землі
+                {
+                    characterController.StopEating(); // перестаєм хавать
+                    wasInterating = false;
+                }
+            }
         }
         else
         {
-            if (wasInterating)
+            Collider2D[] sleepSpotColliders = Physics2D.OverlapCircleAll(bodyCollider.transform.position, bodyCollider.radius, sleepingSpots);
+            if (sleepSpotColliders.Length > 0)
             {
-                characterController.StopEating();
-                wasInterating = false;
+                if (tryInteract)
+                {
+                    PlayerPrefs.SetInt("food", currentFood);
+                    if (isInCave)
+                        sceneChanger.LoadLevelSceneBack();
+                    else
+                        sceneChanger.LoadSleepSpotScene();
+
+                }
             }
         }
     }
