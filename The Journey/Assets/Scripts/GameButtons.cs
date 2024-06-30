@@ -11,6 +11,13 @@ public class GameButtons : MonoBehaviour
     {
         _sceneChanger.LoadScene("MapScene");
     }
+    public void LoadMenu()
+    {
+        var soundLevel = PlayerPrefs.GetInt(PlayerPrefsVariables.SoundLevel);
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.SetInt(PlayerPrefsVariables.SoundLevel, soundLevel);
+        _sceneChanger.LoadScene("MenuScene");
+    }
     public void StartTheGame()
     {
         PlayerPrefs.SetInt(PlayerPrefsVariables.LevelsCompleted, 0);

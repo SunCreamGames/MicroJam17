@@ -16,12 +16,14 @@ public class SoundSlider : MonoBehaviour
 
     void Start()
     {
-        var soundLevel = PlayerPrefs.GetFloat(PlayerPrefsVariables.SoundLevel);
-        _slider.value = soundLevel * _slider.maxValue;
+        var soundLevel = PlayerPrefs.GetInt(PlayerPrefsVariables.SoundLevel);
+        _slider.value = soundLevel;
         _slider.onValueChanged.AddListener(x =>
         {
             soundLevelText.text = $"Sound : {(int)x}/{_slider.maxValue}";
-            PlayerPrefs.SetFloat(PlayerPrefsVariables.SoundLevel, x / _slider.maxValue);
+            PlayerPrefs.SetInt(PlayerPrefsVariables.SoundLevel, (int)x);
         });
+
+        _slider.value = soundLevel;
     }
 }

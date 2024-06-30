@@ -15,6 +15,7 @@ public class EnemyPatroller : MonoBehaviour
     [SerializeField]
     Transform leftCollisionCheck, rightCollisionCheck;
 
+    public event Action OnDeath;
 
     [Range(0, .3f)][SerializeField] private float MovementSmoothing = .05f;
 
@@ -57,8 +58,7 @@ public class EnemyPatroller : MonoBehaviour
         {
             if (collision.gameObject.tag == "Player")
             {
-
-                Debug.Log($"<color=red>GameButtons over</color>");
+                OnDeath?.Invoke();
             }
         }
     }
