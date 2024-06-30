@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,12 +16,12 @@ public class SoundSlider : MonoBehaviour
 
     void Start()
     {
-        var soundLevel = PlayerPrefs.GetFloat("SoundLevel");
+        var soundLevel = PlayerPrefs.GetFloat(PlayerPrefsVariables.SoundLevel);
         _slider.value = soundLevel * _slider.maxValue;
         _slider.onValueChanged.AddListener(x =>
         {
             soundLevelText.text = $"Sound : {(int)x}/{_slider.maxValue}";
-            PlayerPrefs.SetFloat("SoundLevel", x / _slider.maxValue);
+            PlayerPrefs.SetFloat(PlayerPrefsVariables.SoundLevel, x / _slider.maxValue);
         });
     }
 }

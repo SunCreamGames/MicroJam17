@@ -3537,6 +3537,10 @@ PrefabInstance:
       propertyPath: sleepingSpots.m_Bits
       value: 1024
       objectReference: {fileID: 0}
+    - target: {fileID: 2901065920266534997, guid: ffef1793eca4f924a9bd9ad2c8bc4501, type: 3}
+      propertyPath: sleepingSpotsEntrances.m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
     - target: {fileID: 2901065920266535020, guid: ffef1793eca4f924a9bd9ad2c8bc4501, type: 3}
       propertyPath: m_Name
       value: Player

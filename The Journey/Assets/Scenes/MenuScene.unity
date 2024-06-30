@@ -1052,7 +1052,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1771696715}
         m_TargetAssemblyTypeName: GameButtons, Assembly-CSharp
-        m_MethodName: OnStartGameButtonsClick
+        m_MethodName: StartTheGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

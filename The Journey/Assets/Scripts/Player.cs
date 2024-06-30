@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,8 +21,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] CircleCollider2D bodyCollider;
 
-    [SerializeField] LayerMask fruits;
-    [SerializeField] LayerMask sleepingSpots;
+    [SerializeField] LayerMask fruits, sleepingSpots, sleepingSpotsEntrances;
 
     [SerializeField] GameObject sleepingSpotEntrance;
 
@@ -53,10 +53,10 @@ public class Player : MonoBehaviour
     public void ResetValues()
     {
         stamina = maxStamina;
-        var food = PlayerPrefs.GetInt("food");
+        var food = PlayerPrefs.GetInt(PlayerPrefsVariables.Food);
         currentFood = food;
         OnFoodBarUpdate?.Invoke(currentFood);
-        OnStaminaBarUpdate?.Invoke(stamina/maxStamina);
+        OnStaminaBarUpdate?.Invoke(stamina / maxStamina);
     }
 
     void OnItemEaten()
@@ -105,17 +105,32 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Collider2D[] sleepSpotColliders = Physics2D.OverlapCircleAll(bodyCollider.transform.position, bodyCollider.radius, sleepingSpots);
-            if (sleepSpotColliders.Length > 0)
+            Collider2D[] sleepSpotEntranceColliders = Physics2D.OverlapCircleAll(bodyCollider.transform.position, bodyCollider.radius, sleepingSpotsEntrances);
+            if (sleepSpotEntranceColliders.Length > 0)
             {
                 if (tryInteract)
                 {
-                    PlayerPrefs.SetInt("food", currentFood);
+                    PlayerPrefs.SetInt(PlayerPrefsVariables.Food, currentFood);
                     if (isInCave)
                         sceneChanger.LoadLevelSceneBack();
                     else
                         sceneChanger.LoadSleepSpotScene();
 
+                }
+            }
+            else
+            {
+                Collider2D[] sleepSpotColliders = Physics2D.OverlapCircleAll(bodyCollider.transform.position, bodyCollider.radius, sleepingSpots);
+                if (sleepSpotColliders.Length > 0)
+                {
+                    if (tryInteract && isInCave)
+                    {
+                        var levelsCompleted = PlayerPrefs.GetInt(PlayerPrefsVariables.LevelsCompleted);
+                        levelsCompleted++;
+                        PlayerPrefs.SetInt(PlayerPrefsVariables.LevelsCompleted, levelsCompleted);
+                        PlayerPrefs.SetInt(PlayerPrefsVariables.Food, 0);
+                        sceneChanger.LoadScene("MapScene");
+                    }
                 }
             }
         }

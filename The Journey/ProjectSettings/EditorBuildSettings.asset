@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DesertIslandLevelSleepSpot.unity
     guid: 5683f5755824c104dba76d8ff4fd3a74
+  - enabled: 1
+    path: Assets/Scenes/MapScene.unity
+    guid: 451a5ebb1cb737f4497a29bbfd96b89a
   m_configObjects: {}
