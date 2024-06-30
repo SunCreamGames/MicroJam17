@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerScript : MonoBehaviour
+public class Player : MonoBehaviour
 {
 
     [SerializeField] CharacterController2D characterController;
@@ -11,29 +11,42 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] int foodNeeded = 5;
 
     [SerializeField] int currentFood;
+    [SerializeField] float staminaRegenModeifier = 0.05f;
 
-    [SerializeField] float stamina;
+    [SerializeField] float maxStamina = 5f;
+    float stamina;
+    public float jumpStaminaAmount = 2f;
+    [SerializeField] float startFlightStaminaAmount = 1f;
 
     [SerializeField] CircleCollider2D bodyCollider;
 
     [SerializeField] LayerMask fruits;
 
     public event Action<int> OnFoodBarUpdate;
+    public event Action<float> OnStaminaBarUpdate;
 
     public event Action GameOverByDeath;
 
     bool tryInteract = false;
     bool wasInterating = false;
 
-    // Start is called before the first frame update
+    bool staminaRegen = false;
+
     void Start()
     {
         ResetValues();
     }
 
+    public void UseStamina(float amount)
+    {
+        stamina -= amount;
+        if (stamina <= 0) stamina = 0;
+        OnStaminaBarUpdate?.Invoke(stamina / maxStamina);
+    }
+
     public void ResetValues()
     {
-        stamina = 5f;
+        stamina = maxStamina;
         currentFood = 0;
     }
 
@@ -47,6 +60,13 @@ public class PlayerScript : MonoBehaviour
     {
         tryInteract = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         Debug.Log(tryInteract);
+
+        if (stamina < maxStamina && staminaRegen)
+        {
+            stamina += Time.deltaTime * staminaRegenModeifier;
+            stamina = Mathf.Min(maxStamina, stamina);
+            OnStaminaBarUpdate?.Invoke(stamina / maxStamina);
+        }
     }
     private void FixedUpdate()
     {
@@ -71,4 +91,18 @@ public class PlayerScript : MonoBehaviour
             }
         }
     }
+
+    public void StaminaRegenStop()
+    {
+        staminaRegen = false;
+    }
+
+    public void StaminaRegenStart()
+    {
+        staminaRegen = true;
+    }
+
+    public bool CanPerformJump => stamina >= jumpStaminaAmount;
+    public bool CanStartFlight => stamina >= startFlightStaminaAmount;
+    public bool CanFlight => stamina >= 0.05f;
 }

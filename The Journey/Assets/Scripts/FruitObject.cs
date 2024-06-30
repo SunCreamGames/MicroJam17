@@ -19,8 +19,6 @@ public class FruitObject : MonoBehaviour
     }
     public bool InteractWith(float time)
     {
-        Debug.Log($"<color=red>Fruit interacting</color>");
-
         eatProgressBar.enabled = true;
         timeLeftToEat -= time;
         if (timeLeftToEat > 0)

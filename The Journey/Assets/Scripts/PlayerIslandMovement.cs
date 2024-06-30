@@ -10,38 +10,35 @@ public class PlayerIslandMovement : MonoBehaviour
     [SerializeField]
     CharacterController2D characterController;
 
-    bool fly, crouch, jump;
+
+    bool crouch, jump;
     float movementX, movementY;
 
     void Start()
     {
-        fly = crouch = jump = false;
+        crouch = jump = false;
     }
 
     void Update()
     {
         var horizontalIput = Input.GetAxisRaw("Horizontal");
         var verticalInput = Input.GetAxisRaw("Vertical");
-        if(Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
             jump = true;
 
 
-        if (verticalInput > 0)
+        if (verticalInput >= 0)
         {
-            fly = true;
             crouch = false;
-        }
-        else if (verticalInput < 0)
-        {
-            fly = false;
-            crouch = true;
         }
         else
         {
-            fly = crouch = false;
+            crouch = true;
         }
+
         movementX = horizontalIput;
         movementY = verticalInput;
+
     }
 
     private void FixedUpdate()

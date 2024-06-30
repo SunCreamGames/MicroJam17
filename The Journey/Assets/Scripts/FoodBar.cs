@@ -8,7 +8,7 @@ public class FoodBar : MonoBehaviour
 {
 
     [SerializeField]
-    PlayerScript player;
+    Player player;
 
     [SerializeField]
     Image[] foodCellFillings;

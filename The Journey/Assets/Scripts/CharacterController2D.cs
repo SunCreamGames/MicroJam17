@@ -25,6 +25,12 @@ public class CharacterController2D : MonoBehaviour
 
     FruitObject interactingObject;
 
+
+    [SerializeField]
+    Player player;
+    public event Action<float> OnFlight;
+    public event Action OnJump;
+
     private bool isInteracting;
 
     [Header("Events")]
@@ -61,7 +67,6 @@ public class CharacterController2D : MonoBehaviour
 
     public bool TryEat(FruitObject fruit)
     {
-        Debug.Log($"<color=red>Controller interacting</color>");
         isInteracting = true;
         interactingObject = fruit;
         var isFruitEaten = fruit.InteractWith(Time.fixedDeltaTime);
@@ -84,9 +89,11 @@ public class CharacterController2D : MonoBehaviour
 
     public void Move(float move, float flyMove, bool crouch, bool jump)
     {
+
         if (isInteracting)
         {
             Rigidbody2D.velocity = Vector3.zero;
+            player.StaminaRegenStart(); // StartRegen if we are interacting and not moving
             return;
         }
 
@@ -123,10 +130,17 @@ public class CharacterController2D : MonoBehaviour
         }
 
         Vector3 targetVelocity = new Vector2(move * 10f, Rigidbody2D.velocity.y);
-        if (flyMove > 0f)
+        if (flyMove > 0f && player.CanFlight && (!Grounded || player.CanStartFlight))
         {
             targetVelocity = new Vector2(move * 10f, flyMove * 10f);
+            player.UseStamina(Time.fixedDeltaTime);
         }
+
+        if (Grounded && move == 0f)
+            player.StaminaRegenStart(); // StartRegen if we are standing/crouching on the same spot
+        else
+            player.StaminaRegenStop();
+
 
         Rigidbody2D.velocity = Vector3.SmoothDamp(Rigidbody2D.velocity, targetVelocity, ref Velocity, MovementSmoothing);
 
@@ -140,9 +154,11 @@ public class CharacterController2D : MonoBehaviour
         }
 
 
-        if (Grounded && jump)
+        if (Grounded && jump && player.CanPerformJump)
         {
+            player.StaminaRegenStop();
             Grounded = false;
+            player.UseStamina(player.jumpStaminaAmount);
             Rigidbody2D.AddForce(new Vector2(0f, JumpForce));
         }
     }
