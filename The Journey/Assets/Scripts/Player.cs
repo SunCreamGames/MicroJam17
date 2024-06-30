@@ -54,12 +54,20 @@ public class Player : MonoBehaviour
     {
         currentFood++;
         OnFoodBarUpdate?.Invoke(currentFood);
+        if (foodNeeded <= currentFood)
+        {
+
+            Debug.Log($"<color=red> Full </color>");
+        }
     }
 
     private void Update()
     {
         tryInteract = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        Debug.Log(tryInteract);
+        
+        if (foodNeeded <= currentFood)
+            tryInteract = false;
+
 
         if (stamina < maxStamina && staminaRegen)
         {
@@ -71,8 +79,6 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(bodyCollider.transform.position, bodyCollider.radius, fruits);
-
-        Debug.Log($"<color=cyan>{colliders.Length}</color>");
 
         if (colliders.Length == 0) return;
 
