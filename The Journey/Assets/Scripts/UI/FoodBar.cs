@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ public class FoodBar : MonoBehaviour
     int currentFoodState;
     void Start()
     {
-        currentFoodState = 0;
+        currentFoodState = PlayerPrefs.GetInt(PlayerPrefsVariables.Food);
         player.OnFoodBarUpdate += UpdateFoodBar;
         Show();
     }

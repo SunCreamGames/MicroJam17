@@ -12,14 +12,16 @@ namespace Assets.Scripts
         public DeathScreen deathScreen;
         [SerializeField] Player player;
         [SerializeField] Transform sleepingSpotEntrance;
+        Abyss abyss;
         void Awake()
         {
+            abyss = FindObjectOfType<Abyss>();
             var enemies = FindObjectsOfType<EnemyPatroller>();
             foreach (var item in enemies)
             {
                 item.OnDeath += GameOverByDeath;
             }
-
+            abyss.DeathFall += GameOverByDeath;
             if (PlayerPrefs.GetInt(PlayerPrefsVariables.IsGettingBackFromCave) == 0) return;
             player.transform.position = sleepingSpotEntrance.position;
             PlayerPrefs.SetInt(PlayerPrefsVariables.IsGettingBackFromCave, 0);
