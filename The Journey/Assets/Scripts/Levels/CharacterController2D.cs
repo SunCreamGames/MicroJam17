@@ -12,9 +12,9 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private Transform GroundCheck;
     [SerializeField] private Transform[] CeilingChecks;
     [SerializeField] private Collider2D CrouchDisableCollider;
-    [SerializeField] private SpriteRenderer CrouchDisableImage;
 
     const float GroundedRadius = .2f;
+    public Animator animator;
     [HideInInspector]
     public bool Grounded;
     const float CeilingRadius = .05f;
@@ -60,7 +60,10 @@ public class CharacterController2D : MonoBehaviour
             {
                 Grounded = true;
                 if (!wasGrounded)
+                {
                     OnLandEvent.Invoke();
+                    animator.SetBool("Grounded", true);
+                }
             }
         }
     }
@@ -108,26 +111,22 @@ public class CharacterController2D : MonoBehaviour
             }
         }
 
-
         if (Grounded && crouch)
         {
             flyMove = 0f;
             move *= CrouchSpeed;
 
             if (CrouchDisableCollider != null)
-            {
                 CrouchDisableCollider.enabled = false;
-                CrouchDisableImage.enabled = false;
-            }
         }
         else
         {
             if (CrouchDisableCollider != null)
-            {
                 CrouchDisableCollider.enabled = true;
-                CrouchDisableImage.enabled = true;
-            }
         }
+        animator.SetFloat("moveX", Mathf.Abs(move));
+        animator.SetFloat("moveY", Mathf.Abs(flyMove));
+
 
         Vector3 targetVelocity = new Vector2(move * 10f, Rigidbody2D.velocity.y);
         if (flyMove > 0f && player.CanFlight && (!Grounded || player.CanStartFlight))
@@ -135,6 +134,7 @@ public class CharacterController2D : MonoBehaviour
             targetVelocity = new Vector2(move * 10f, flyMove * 10f);
             player.UseStamina(Time.fixedDeltaTime);
         }
+        animator.SetBool("YUp", targetVelocity.y > 0);
 
         if (Grounded && move == 0f)
             player.StaminaRegenStart(); // StartRegen if we are standing/crouching on the same spot
@@ -152,15 +152,22 @@ public class CharacterController2D : MonoBehaviour
         {
             Flip();
         }
+        animator.SetBool("Crouch", crouch);
 
 
         if (Grounded && jump && player.CanPerformJump)
         {
             player.StaminaRegenStop();
+            animator.SetBool("Grounded", Grounded);
             Grounded = false;
             player.UseStamina(player.jumpStaminaAmount);
             Rigidbody2D.AddForce(new Vector2(0f, JumpForce));
+            animator.SetTrigger("Jump");
         }
+
+        if (!Grounded)
+            animator.SetBool("Grounded", Grounded);
+
     }
 
 

@@ -644,6 +644,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fc326f1c576c164ba328af932f64fb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneChanger: {fileID: 0}
   characterController: {fileID: 2901065920266534992}
   foodNeeded: 5
   currentFood: 0
@@ -655,6 +656,14 @@ MonoBehaviour:
   fruits:
     serializedVersion: 2
     m_Bits: 256
+  sleepingSpots:
+    serializedVersion: 2
+    m_Bits: 0
+  sleepingSpotsEntrances:
+    serializedVersion: 2
+    m_Bits: 0
+  sleepingSpotEntrance: {fileID: 0}
+  isInCave: 0
 --- !u!114 &2901065920266534994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -694,6 +703,7 @@ MonoBehaviour:
   - {fileID: 2901065919512599350}
   CrouchDisableCollider: {fileID: 2901065919982445442}
   CrouchDisableImage: {fileID: 2901065919982445445}
+  animator: {fileID: 0}
   Grounded: 0
   player: {fileID: 2901065920266534997}
   OnLandEvent:
